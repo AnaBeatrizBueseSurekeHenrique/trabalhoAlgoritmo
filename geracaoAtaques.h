@@ -8,13 +8,8 @@ no *randomizarValores(no*ataqueGerais, int i){
     ataqueGerais = insereAVL(ataqueGerais, i, x);  
     return ataqueGerais; 
 }
-
-void mostraAtaques(no *ataques){
-    no* aux = ataques;
-    if(aux != NULL){
-        mostraAtaques(aux->esquerda);
-        cout << aux->info << ". ";
-        switch(aux->valorAtaque){
+void valoresAtaque(int x){
+    switch(x){
             case 0:
                 cout << "TESOURA" << " ";
                 break;
@@ -25,6 +20,14 @@ void mostraAtaques(no *ataques){
                 cout << "PEDRA" << " ";
                 break;
         }
+}
+
+void mostraAtaques(no *ataques){
+    no* aux = ataques;
+    if(aux != NULL){
+        mostraAtaques(aux->esquerda);
+        cout << aux->info << ". ";
+        valoresAtaque(aux->valorAtaque);
 		mostraAtaques(aux->direita);
     }
 }

@@ -119,62 +119,104 @@ void emOrdem_AVL(no *T){
 		emOrdem_AVL(T->direita);
     }
 } 
-no*removeAVL(no* L, int *x){
-    no * aux = L, *aux2 = aux;
-    while(aux!= NULL && aux->info != *x){
-        if(*x > aux->info){
-            aux2 = aux;
-            aux = aux->direita;
-        } else{
-            aux2 = aux;
-            aux = aux->esquerda;
-        }
+
+void posOrdem_AVL(no *T){
+    if(T != NULL){
+        emOrdem_AVL(T->esquerda);
+		emOrdem_AVL(T->direita);
+        cout << T->info << endl;
     }
-    if(aux == NULL){
-        *x = -1;
-        return L;
+} 
+no *maior_AB(no *T) {
+    no *p;
+	if (T != NULL) {
+		while (T->direita != NULL){
+			T = T->direita;
+		}
+		return T;  
+	}
+	else
+		return NULL;
+}
+
+no *rotacao(no* L, int fatb){
+    int fatAux;
+    if(fatb > 0){
+        fatAux = getBalance(L->direita);
     } else{
-        *x = aux->valorAtaque;
-        if(aux->direita == NULL && aux->esquerda == NULL){
-            if(aux2->direita == aux){
-                aux2->direita = NULL;
-            } else{
-                aux2->esquerda = NULL;
-            }
-        } else{
-            no* aux3;
-            if(aux->direita == NULL || aux->esquerda == NULL){
-                if(aux->direita != NULL){
-                    aux3 = aux->direita;
-                } else{
-                    aux3 = aux->esquerda;
-                } 
-            } else{
-                no* aux4;
-                aux3 = aux->esquerda;
-                aux4 = aux3;
-                while(aux3->direita != NULL){
-                    if(aux3->direita->direita == NULL){
-                        aux4 = aux3;
-                    }
-                    aux3 = aux3->direita;
-                }
-                aux4->direita = NULL;
-                aux3->esquerda = aux->direita;
-            }
-             if(aux2->direita == aux){
-                aux2->direita = aux3;
-            } else{
-                if(aux2->esquerda == aux){
-                    aux2->esquerda = aux3;
-                } else{
-                    aux2 = aux3;
-                    cout << "ENTAO....";
-                    emOrdem_AVL(aux2);
-                }
-            }  
-        }
-        delete aux;
+        fatAux = getBalance(L->esquerda);
     }
-    return L;
+    if(fatAux > 1 || fatAux*-1 > 1){
+        L = rotacao(L->direita, fatb);
+        fatb = getBalance(L);   
+        if(!(fatb > 1 || fatb*-1 > 1)){
+            return L;
+        }
+    }
+    if(fatb > 0){
+        fatAux = getBalance(L->direita);
+        if(fatAux < 0){
+            L = rotacaoDireita(L);
+        }
+        return rotacaoEsquerda(L);
+    } else{
+        fatAux = getBalance(L->esquerda);
+        if(fatAux > 0){
+            L = rotacaoEsquerda(L);
+        }
+        return rotacaoDireita(L);
+    }
+}
+no *removeAVL(no *T, int *x){
+	no *p;
+    int aux = *x;
+	if (T == NULL) {
+        *x = -1;
+		return NULL;
+	}
+	else{
+		if (*x < T->info)
+			T->esquerda = removeAVL(T->esquerda, x);
+		else {
+			if (*x > T->info)
+				T->direita = removeAVL(T->esquerda, x);
+			else {
+				*x = T->valorAtaque;
+				if ((T->esquerda == NULL) && (T->direita == NULL)){
+					p = T;
+					free(p);
+					T = NULL;
+					return T;
+				}
+				else{
+					if (T->esquerda == NULL){ 
+						p = T;
+						T = T->direita;
+						free(p);
+						return T;
+					}
+					else{
+						// so tem o filho da esquerda 
+						if (T->direita == NULL){ 
+							p = T;
+							T = T->esquerda;
+							free(p);
+							return T;
+						}
+						else {
+							// NO tem 2 filhos 
+							p = maior_AB(T->esquerda);
+							T->info = p->info;
+							T->esquerda = removeAVL(T->esquerda, &aux);
+						}
+					}
+				}
+			}
+		}
+        int fatb = getBalance(T);
+        if(fatb > 1 || fatb*-1 > 1){
+            return rotacao(T, fatb);
+        }
+		return T;
+	}
 }

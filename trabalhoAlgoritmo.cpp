@@ -13,14 +13,17 @@ int main(){
     jogador = inicializaPersonagem(jogador, vidaJogador);    
     inimigo = inicializaPersonagem(inimigo, vidaInimigo);
     while(jogador.vida > 0 && inimigo.vida > 0){
-        cout << "???????????????";
         mostraAtaques(jogador.lista);
+        posOrdem_AVL(jogador.lista);
         cout << "Escolha um Ataque para fazer" << endl;
         cin >> ataqueJ;
         jogador.lista = removeAVL(jogador.lista, &ataqueJ);
-        cout << "AAAAAAAAAAAAAA" << endl;
         ataqueI = inimigo.lista->info;
-        inimigo.lista = removeAVL(jogador.lista, &ataqueI);
+
+        cout << endl;
+        inimigo.lista = removeAVL(inimigo.lista, &ataqueI);
+        cout << "INIMIGO ATAQUE: ";
+        valoresAtaque(ataqueI);
         switch(ataqueJ){
             case 0:
                 switch(ataqueI){
@@ -31,7 +34,7 @@ int main(){
                         result = 'v';
                         break;
                     case 2:
-                        cout << 'd';
+                        result = 'd';
                         break;
                 }
                 break;
@@ -44,7 +47,7 @@ int main(){
                         result = 'e';
                         break;
                     case 2:
-                        cout << 'v';
+                        result = 'v';
                         break;
                 }
                 break;
@@ -57,13 +60,13 @@ int main(){
                         result = 'd';
                         break;
                     case 2:
-                        cout << 'e';
+                        result = 'e';
                         break;
                 }
                 break;
         }
-        cout << "VIDA JOGADOR: " << jogador.vida << endl;
-        cout << "VIDA INIMIGO: " << inimigo.vida << endl;
+        
+        
         if(result == 'd'){
             cout << "Vitoria Inimigo" << endl;
             jogador.vida--;
@@ -75,7 +78,10 @@ int main(){
                 cout << "EMPATE" << endl;
             }
         }
+        cout << endl << "VIDA JOGADOR: " << jogador.vida << endl;
+        cout << "VIDA INIMIGO: " << inimigo.vida << endl;
         if(jogador.lista == NULL){
+            cout << "AQUI????????????" << endl;
             for(int i = 0; i < 5; i++){
                 jogador.lista = randomizarValores(jogador.lista, i);
                 inimigo.lista = randomizarValores(inimigo.lista, i);
