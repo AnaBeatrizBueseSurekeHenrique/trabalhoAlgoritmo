@@ -1,5 +1,6 @@
 #include <iostream>
 #include "personagem.h"
+#include "aparenciaPersonagem.h"
 #define vidaJogador 5
 #define vidaInimigo 5
 
@@ -13,10 +14,11 @@ int main(){
     jogador = inicializaPersonagem(jogador, vidaJogador);    
     inimigo = inicializaPersonagem(inimigo, vidaInimigo);
     while(jogador.vida > 0 && inimigo.vida > 0){
+        imprimirInimigo(inimigo.vida);
         mostraAtaques(jogador.lista);
-        posOrdem_AVL(jogador.lista);
         cout << "Escolha um Ataque para fazer" << endl;
         cin >> ataqueJ;
+        system("cls");
         jogador.lista = removeAVL(jogador.lista, &ataqueJ);
         ataqueI = inimigo.lista->info;
 
@@ -65,8 +67,6 @@ int main(){
                 }
                 break;
         }
-        
-        
         if(result == 'd'){
             cout << "Vitoria Inimigo" << endl;
             jogador.vida--;
@@ -81,7 +81,6 @@ int main(){
         cout << endl << "VIDA JOGADOR: " << jogador.vida << endl;
         cout << "VIDA INIMIGO: " << inimigo.vida << endl;
         if(jogador.lista == NULL){
-            cout << "AQUI????????????" << endl;
             for(int i = 0; i < 5; i++){
                 jogador.lista = randomizarValores(jogador.lista, i);
                 inimigo.lista = randomizarValores(inimigo.lista, i);

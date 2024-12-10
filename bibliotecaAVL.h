@@ -122,8 +122,8 @@ void emOrdem_AVL(no *T){
 
 void posOrdem_AVL(no *T){
     if(T != NULL){
-        emOrdem_AVL(T->esquerda);
-		emOrdem_AVL(T->direita);
+        posOrdem_AVL(T->esquerda);
+		posOrdem_AVL(T->direita);
         cout << T->info << endl;
     }
 } 
@@ -179,7 +179,7 @@ no *removeAVL(no *T, int *x){
 			T->esquerda = removeAVL(T->esquerda, x);
 		else {
 			if (*x > T->info)
-				T->direita = removeAVL(T->esquerda, x);
+				T->direita = removeAVL(T->direita, x);
 			else {
 				*x = T->valorAtaque;
 				if ((T->esquerda == NULL) && (T->direita == NULL)){
@@ -196,7 +196,6 @@ no *removeAVL(no *T, int *x){
 						return T;
 					}
 					else{
-						// so tem o filho da esquerda 
 						if (T->direita == NULL){ 
 							p = T;
 							T = T->esquerda;
@@ -204,10 +203,9 @@ no *removeAVL(no *T, int *x){
 							return T;
 						}
 						else {
-							// NO tem 2 filhos 
 							p = maior_AB(T->esquerda);
 							T->info = p->info;
-							T->esquerda = removeAVL(T->esquerda, &aux);
+							T->esquerda = removeAVL(T->esquerda,&p->info);
 						}
 					}
 				}
