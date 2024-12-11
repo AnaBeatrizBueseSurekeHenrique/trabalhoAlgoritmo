@@ -169,7 +169,6 @@ no *rotacao(no* L, int fatb){
 }
 no *removeAVL(no *T, int *x){
 	no *p;
-    int aux = *x;
 	if (T == NULL) {
         *x = -1;
 		return NULL;

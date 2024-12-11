@@ -15,17 +15,26 @@ int main(){
     inimigo = inicializaPersonagem(inimigo, vidaInimigo);
     while(jogador.vida > 0 && inimigo.vida > 0){
         imprimirInimigo(inimigo.vida);
+        cout << "Escolha um Ataque para realizar: " << endl;
         mostraAtaques(jogador.lista);
-        cout << "Escolha um Ataque para fazer" << endl;
         cin >> ataqueJ;
         system("cls");
         jogador.lista = removeAVL(jogador.lista, &ataqueJ);
+        while(ataqueJ == -1){
+            cout << "Insira um valor em seu inventario!";
+            cin >> ataqueJ;
+            jogador.lista = removeAVL(jogador.lista, &ataqueJ);
+            system("cls");
+        }
         ataqueI = inimigo.lista->info;
 
         cout << endl;
         inimigo.lista = removeAVL(inimigo.lista, &ataqueI);
-        cout << "INIMIGO ATAQUE: ";
+        cout << "Seu ataque foi ";
+        valoresAtaque(ataqueJ);
+        cout << "e o ataque do inimigo foi......";
         valoresAtaque(ataqueI);
+        cout << endl;
         switch(ataqueJ){
             case 0:
                 switch(ataqueI){
@@ -81,7 +90,7 @@ int main(){
         cout << endl << "VIDA JOGADOR: " << jogador.vida << endl;
         cout << "VIDA INIMIGO: " << inimigo.vida << endl;
         if(jogador.lista == NULL){
-            for(int i = 0; i < 5; i++){
+            for(int i = 0; i < 10; i++){
                 jogador.lista = randomizarValores(jogador.lista, i);
                 inimigo.lista = randomizarValores(inimigo.lista, i);
             }

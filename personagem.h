@@ -9,7 +9,7 @@ struct personagem{
 
 personagem inicializaPersonagem(personagem P, int vida){
     P.lista = inicializaAVL(P.lista);
-    for(int i = 0; i < 5; i++){
+    for(int i = 0; i < 10; i++){
         P.lista = randomizarValores(P.lista, i);
     }
     P.vida = vida;
